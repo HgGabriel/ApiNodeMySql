@@ -1,6 +1,6 @@
 # API de Usuário com Node.js e MySQL
 
-Este repositório contém um projeto de API REST para gerenciamento de usuários, desenvolvido com Node.js e MySQL. A API permite a criação e listagem de usuários armazenados em um banco de dados.
+Este repositório contém um projeto de API REST para gerenciamento completo de usuários, desenvolvido com Node.js e MySQL. A API permite criar, listar, atualizar e deletar usuários armazenados em um banco de dados.
 
 ## Requisitos
 Certifique-se de ter instalado em sua máquina:
@@ -40,32 +40,87 @@ node index.js
 O servidor rodará na porta definida no `.env` (padrão: 3000).
 
 ## Rotas da API
-- **Criar usuário**
-  - **POST** `/users`
-  - Corpo da requisição (JSON):
-    ```json
+
+### Criar usuário
+- **POST** `/users`
+- **Corpo da requisição (JSON):**
+  ```json
+  {
+    "name": "Nome do Usuário",
+    "email": "email@example.com"
+  }
+  ```
+- **Resposta de Sucesso:**
+  ```json
+  {
+    "message": "Usuário criado com sucesso",
+    "id": 1
+  }
+  ```
+
+### Listar todos os usuários
+- **GET** `/users`
+- **Resposta de Sucesso:**
+  ```json
+  [
     {
+      "id": 1,
       "name": "Nome do Usuário",
       "email": "email@example.com"
     }
-    ```
+  ]
+  ```
 
-- **Listar usuários**
-  - **GET** `/users`
+### Atualizar usuário
+- **PUT** `/users/:id`
+- **Corpo da requisição (JSON):**
+  ```json
+  {
+    "name": "Novo Nome",
+    "email": "novoemail@example.com"
+  }
+  ```
+- **Resposta de Sucesso:**
+  ```json
+  {
+    "message": "Usuário atualizado com sucesso"
+  }
+  ```
+- **Erro (Usuário não encontrado):**
+  ```json
+  {
+    "message": "Usuário não encontrado"
+  }
+  ```
+
+### Deletar usuário
+- **DELETE** `/users/:id`
+- **Resposta de Sucesso:**
+  ```json
+  {
+    "message": "Usuário deletado com sucesso"
+  }
+  ```
+- **Erro (Usuário não encontrado):**
+  ```json
+  {
+    "message": "Usuário não encontrado"
+  }
+  ```
 
 ## Uso com Docker
-Se desejar rodar o MySQL em um contêiner Docker, utilize o seguinte comando:
+Para executar o MySQL em um contêiner Docker:
 ```bash
 docker run -d -p 3306:3306 --name meu-mysql -e MYSQL_ROOT_PASSWORD=sua_senha mysql:latest
 ```
-Para acessar o MySQL dentro do contêiner:
+Acesse o MySQL dentro do contêiner com:
 ```bash
 docker exec -it meu-mysql mysql -u root -p
 ```
 
 ## Testando a API
-Você pode testar a API utilizando ferramentas como [Postman](https://www.postman.com/) ou [Insomnia](https://insomnia.rest/).
-
-## Licença
-Este projeto é distribuído sob a MIT License. Veja o arquivo `LICENSE` para mais detalhes.
-
+Utilize ferramentas como [Postman](https://www.postman.com/) ou [Insomnia](https://insomnia.rest/) para testar todas as operações CRUD:
+1. **Criar Usuário:** POST para `/users` com corpo JSON.
+2. **Listar Usuários:** GET para `/users`.
+3. **Atualizar Usuário:** PUT para `/users/1` (substitua 1 pelo ID desejado).
+4. **Deletar Usuário:** DELETE para `/users/1` (substitua 1 pelo ID desejado).
